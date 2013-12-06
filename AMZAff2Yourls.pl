@@ -29,6 +29,7 @@ use RequestSignatureHelper;
 use LWP::UserAgent;
 use XML::Simple;
 use URI::Escape;
+use CGI;
 
 use Config::Tiny ;
 my $Config = Config::Tiny->new();
@@ -40,8 +41,37 @@ my $AWSEndPoint = $Config->{AMZ}->{AWSEndPoint};
 my $YourlsId = $Config->{YOURLS}->{YOURLSSignature};
 my $YourlsEndPoint = $Config->{YOURLS}->{YOURLSEndPoint};
 
-# see if user provided ItemId on command-line
-my $itemId = shift @ARGV || '0545010225';
+my $AMZItem ;
+my $cgi ;
+
+if (@ARGV > 0)
+{
+	$AMZItem = shift @ARGV ;
+} else {
+	$cgi = new CGI ;
+	print $cgi->header('Content-type: text/html; charset=utf-8') ;
+	print $cgi->start_html(-title=>"Amazon Affiliates Link Generator for yourls", -encoding=>"UTF-8") ;
+	$AMZItem = $cgi->param('url') ;
+}
+
+my $itemId ;
+
+if ($AMZItem =~ /^[0-9A-Z]{10}$/)
+{
+	$itemId = $AMZItem ;
+} elsif ($AMZItem =~ /[0-9A-Z]{10}/)
+{
+	$AMZItem =~ m/amazon\.([a-zA-Z]+)\// ;
+	my $tld = $1 ;
+	#print "TLD = $tld\n" ;
+	$AWSEndPoint = "ecs.amazonaws.$tld" ; 
+	$AMZItem =~ /([0-9A-Z]{10})/ ;
+	$itemId = $1 ;
+	#print "ASIN : $itemId\n"  ;
+} else {
+	print "No ASIN Found !!\n" ;
+	exit(2) ;
+}
 
 # Set up the helper
 my $helper = new RequestSignatureHelper ( $AWSId, $AWSSecret, $AWSEndPoint);
@@ -90,10 +120,11 @@ if ($response->is_success()) {
 
 my $request = {
 	action=> 'shorturl',
-	url =>  uri_unescape($signedurl),
+	url =>  $signedurl,
 	output => 'xml',
 };
 
+#url =>  uri_unescape($signedurl),
 my $url = $YourlsEndPoint."/yourls-api.php?action=".$request->{'action'}."&url=".$request->{url}."&output=".$request->{output}."&signature=".$YourlsId;
 
 my $ua = new LWP::UserAgent();
@@ -109,10 +140,16 @@ if ($response->is_success()) {
 	$shorturl = $xml->{shorturl} ;
 }
 
-
+if (@ARGV > 0)
+{
     print "Item $itemId is titled \"$title\"\n";
 	print "Signed URL : ".uri_unescape($signedurl)."\n" ;
 	print "Short URL : $shorturl\n" ;
+} else {
+	print "Item is : '$title'<br/>" ;
+	print "<br/>Amazon Link : ".uri_unescape($signedurl)." <a href='".uri_unescape($signedurl)."'>Link</a><br/>" ;
+	print "Shortened URL : $shorturl and <a href='$shorturl'>Link</a><br/>" ;
+}
 
 
 
