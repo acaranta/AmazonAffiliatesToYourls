@@ -68,11 +68,12 @@ if ($AMZItem =~ /^[0-9A-Z]{10}$/)
 	$AMZItem =~ /([0-9A-Z]{10})/ ;
 	$itemId = $1 ;
 	#print "ASIN : $itemId\n"  ;
+	print 'You can drag the bookmarlet to get your links directly from an amazon Page : <a href="javascript:(function(){window.open(\''.$cgi->url().'?url=\'+document.URL);})();">AMZ Affiliated Link</a><hr><br/><br/>' ;
 } else {
+	print 'You can drag the bookmarlet to get your links directly from an amazon Page : <a href="javascript:(function(){window.open(\''.$cgi->url().'?url=\'+document.URL);})();">AMZ Affiliated Link</a><hr><br/><br/>' ;
 	print "No ASIN Found !!\n" ;
 	exit(2) ;
 }
-
 # Set up the helper
 my $helper = new RequestSignatureHelper ( $AWSId, $AWSSecret, $AWSEndPoint);
 
