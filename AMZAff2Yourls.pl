@@ -1,9 +1,9 @@
 #!/usr/bin/perl
 
 use strict;
-
+use utf8 ;
 use Data::Dumper;
-
+use Text::Unidecode;
 use RequestSignatureHelper;
 use LWP::UserAgent;
 use XML::Simple;
@@ -82,6 +82,8 @@ my $content = $response->content();
 #print "Recieved Response: $content \n";
 
 my $xmlParser = new XML::Simple();
+#print Dumper($content) ;
+#decode_utf8($content) ;
 my $xml = $xmlParser->XMLin($content);
 
 #print "Parsed XML is: " . Dumper($xml) . "\n";
@@ -112,7 +114,7 @@ my $url = $YourlsEndPoint."/yourls-api.php?action=".$request->{'action'}."&url="
 my $ua = new LWP::UserAgent();
 my $response = $ua->get($url);
 my $content = $response->content();
-
+##print $content ;
 my $xmlParser = new XML::Simple();
 my $xml = $xmlParser->XMLin($content);
 
@@ -125,13 +127,15 @@ if ($response->is_success()) {
 if (@ARGV > 0)
 {
     print "Item $itemId is titled \"$title\"\n";
-	print "Signed URL : ".uri_unescape($signedurl)."\n" ;
+	#print "Signed URL : ".uri_unescape($signedurl)."\n" ;
+	print "Signed URL : $signedurl\n" ;
 	print "Short URL : $shorturl\n" ;
 } else {
 	if ($showLinks ne '0')
 	{
 	print "Item is : '$title'<br/>" ;
-	print "<br/>Amazon Link : ".uri_unescape($signedurl)." <a href='".uri_unescape($signedurl)."'>Link</a><br/>" ;
+	#print "<br/>Amazon Link : ".uri_unescape($signedurl)." <a href='".uri_unescape($signedurl)."'>Link</a><br/>" ;
+	print "<br/>Amazon Link : ".uri_unescape($signedurl)." <a href='".$signedurl."'>Link</a><br/>" ;
 	print "Shortened URL : $shorturl and <a href='$shorturl'>Link</a><br/>" ;
 	my $curtime = time() ;
 	my $titleshare = $title ;
