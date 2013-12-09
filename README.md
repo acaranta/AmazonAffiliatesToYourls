@@ -1,4 +1,4 @@
-AamazonAffiliatesToYourls
+AmazonAffiliatesToYourls
 =========================
 
 Allows you to easily generate your own Amazon affiliate link and shorten them with your Yourls URL shortener.
