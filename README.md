@@ -45,9 +45,8 @@ Enjoy !
 - [] Make the web pages less ugly !!
 - [] Enhance the bookmarlet
 - [] Add other type of sponsored Amazon requests (product search, etc)
-- [x] Add social networks posting links
 
-## Lke it ?
+## Like it ?
 OK, if you liked this two ways to thank me :
 -Bitcoin donation to 13MNuF4dCJNh2vs2TS9ms2cKPSpWG3hUGj
 -Or just buy product on amazon via link generated through my Affiliate links ;) : [http://api.minixer.com/AMZ2YOURLS/AMZAff2Yourls.pl](Link)
