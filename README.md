@@ -46,8 +46,7 @@ Enjoy !
 - [] Enhance the bookmarlet
 - [] Add other type of sponsored Amazon requests (product search, etc)
 
-## Like it ?
-OK, if you liked this two ways to thank me :
+## Like it ? OK, if you liked this two ways to thank me :
 -Bitcoin donation to 13MNuF4dCJNh2vs2TS9ms2cKPSpWG3hUGj
 -Or just buy product on amazon via link generated through my Affiliate links ;) : [http://api.minixer.com/AMZ2YOURLS/AMZAff2Yourls.pl](Link)
 
