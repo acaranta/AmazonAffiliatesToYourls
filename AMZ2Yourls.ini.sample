@@ -2,8 +2,8 @@
 AWSId=
 AWSSecret=
 AWSAssociateTag=
-AWSEndPoint=
+AWSEndPoint=ecs.amazonaws.fr
 
 [YOURLS]
 YOURLSSignature=
-YOURLSEndPoint=
+YOURLSEndPoint=http://your.ls

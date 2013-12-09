@@ -1,3 +1,7 @@
+####
+#This Module is based on code example as provided by Amazon 
+#
+###
 package RequestSignatureHelper;
 
 use strict;
