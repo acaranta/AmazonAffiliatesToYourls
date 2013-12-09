@@ -45,7 +45,7 @@ Enjoy !
 - [] Make the web pages less ugly !!
 - [] Enhance the bookmarlet
 - [] Add other type of sponsored Amazon requests (product search, etc)
-- [] Add social networks posting links
+- [x] Add social networks posting links
 
 ## Lke it ?
 OK, if you liked this two ways to thank me :
