@@ -1,26 +1,5 @@
 #!/usr/bin/perl
 
-##############################################################################################
-# Copyright 2009 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file 
-# except in compliance with the License. A copy of the License is located at
-#
-#       http://aws.amazon.com/apache2.0/
-#
-# or in the "LICENSE.txt" file accompanying this file. This file is distributed on an "AS IS"
-# BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-# License for the specific language governing permissions and limitations under the License. 
-#
-#############################################################################################
-#
-#  Amazon Product Advertising API
-#  Signed Requests Sample Code
-#
-#  API Version: 2009-03-31
-#
-#############################################################################################
-
 use strict;
 
 use Data::Dumper;
@@ -150,6 +129,14 @@ if (@ARGV > 0)
 	print "Item is : '$title'<br/>" ;
 	print "<br/>Amazon Link : ".uri_unescape($signedurl)." <a href='".uri_unescape($signedurl)."'>Link</a><br/>" ;
 	print "Shortened URL : $shorturl and <a href='$shorturl'>Link</a><br/>" ;
+	my $curtime = time() ;
+	my $titleshare = $title ;
+	$titleshare =~ s/'/&#39;/g ;
+	$titleshare =~ s/"/&#34;/g ;
+	print "<br/><br/>Share link :<ul>
+		<li><a target='_blank' href='http://twitter.com/share?_=$curtime&text=$titleshare&url=$shorturl'><img src='img/tweetshare.png'/></a></li>
+		<li><a target='_blank' href='http://www.facebook.com/sharer.php?u=$shorturl'><img src='img/fbshare.png' border=0/></a></li>
+		</ul>" ;
 }
 
 
