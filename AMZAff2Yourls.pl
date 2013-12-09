@@ -3,7 +3,8 @@
 use strict;
 use utf8 ;
 use Data::Dumper;
-use Text::Unidecode;
+#use Text::Unidecode;
+use HTML::Entities ;
 use RequestSignatureHelper;
 use LWP::UserAgent;
 use XML::Simple;
@@ -83,7 +84,6 @@ my $content = $response->content();
 
 my $xmlParser = new XML::Simple();
 #print Dumper($content) ;
-#decode_utf8($content) ;
 my $xml = $xmlParser->XMLin($content);
 
 #print "Parsed XML is: " . Dumper($xml) . "\n";
@@ -102,49 +102,53 @@ if ($response->is_success()) {
 	exit(1) ;
 }
 
-my $request = {
-	action=> 'shorturl',
-	url =>  $signedurl,
-	output => 'xml',
-};
-
-#url =>  uri_unescape($signedurl),
-my $url = $YourlsEndPoint."/yourls-api.php?action=".$request->{'action'}."&url=".$request->{url}."&output=".$request->{output}."&signature=".$YourlsId;
-
-my $ua = new LWP::UserAgent();
-my $response = $ua->get($url);
-my $content = $response->content();
-##print $content ;
-my $xmlParser = new XML::Simple();
-my $xml = $xmlParser->XMLin($content);
-
 my $shorturl ;
 
-if ($response->is_success()) {
-	$shorturl = $xml->{shorturl} ;
-}
+if ($YourlsId =~ /[a-aA-Z0-9]+/)
+{
+	my $request = {
+		action=> 'shorturl',
+		url =>  $signedurl,
+		output => 'xml',
+	};
 
+#url =>  uri_unescape($signedurl),
+	my $url = $YourlsEndPoint."/yourls-api.php?action=".$request->{'action'}."&url=".$request->{url}."&output=".$request->{output}."&signature=".$YourlsId;
+
+	my $ua = new LWP::UserAgent();
+	my $response = $ua->get($url);
+	my $content = $response->content();
+##print $content ;
+	$content =~ s/&(acirc|atilde|reg);//gi ;	
+	my $xmlParser = new XML::Simple();
+	my $xml = $xmlParser->XMLin($content);
+
+
+	if ($response->is_success()) {
+		$shorturl = $xml->{shorturl} ;
+	}
+}
 if (@ARGV > 0)
 {
-    print "Item $itemId is titled \"$title\"\n";
-	#print "Signed URL : ".uri_unescape($signedurl)."\n" ;
+	print "Item $itemId is titled \"$title\"\n";
+#print "Signed URL : ".uri_unescape($signedurl)."\n" ;
 	print "Signed URL : $signedurl\n" ;
 	print "Short URL : $shorturl\n" ;
 } else {
 	if ($showLinks ne '0')
 	{
-	print "Item is : '$title'<br/>" ;
-	#print "<br/>Amazon Link : ".uri_unescape($signedurl)." <a href='".uri_unescape($signedurl)."'>Link</a><br/>" ;
-	print "<br/>Amazon Link : ".uri_unescape($signedurl)." <a href='".$signedurl."'>Link</a><br/>" ;
-	print "Shortened URL : $shorturl and <a href='$shorturl'>Link</a><br/>" ;
-	my $curtime = time() ;
-	my $titleshare = $title ;
-	$titleshare =~ s/'/&#39;/g ;
-	$titleshare =~ s/"/&#34;/g ;
-	print "<br/><br/>Share link :<ul>
-		<li><a target='_blank' href='http://twitter.com/share?_=$curtime&text=$titleshare&url=$shorturl'><img src='img/tweetshare.png'/></a></li>
-		<li><a target='_blank' href='http://www.facebook.com/sharer.php?u=$shorturl'><img src='img/fbshare.png' border=0/></a></li>
-		</ul>" ;
+		print "Item is : '$title'<br/>" ;
+#print "<br/>Amazon Link : ".uri_unescape($signedurl)." <a href='".uri_unescape($signedurl)."'>Link</a><br/>" ;
+		print "<br/>Amazon Link : ".uri_unescape($signedurl)." <a href='".$signedurl."'>Link</a><br/>" ;
+		print "Shortened URL : $shorturl and <a href='$shorturl'>Link</a><br/>" ;
+		my $curtime = time() ;
+		my $titleshare = $title ;
+		$titleshare =~ s/'/&#39;/g ;
+		$titleshare =~ s/"/&#34;/g ;
+		print "<br/><br/>Share link :<ul>
+			<li><a target='_blank' href='http://twitter.com/share?_=$curtime&text=$titleshare&url=$shorturl'><img src='img/tweetshare.png'/></a></li>
+			<li><a target='_blank' href='http://www.facebook.com/sharer.php?u=$shorturl'><img src='img/fbshare.png' border=0/></a></li>
+			</ul>" ;
 	} else {
 		print "\n<h1> Redirecting ...</h1>" ;
 		print '<script type="text/javascript">window.location = "';
