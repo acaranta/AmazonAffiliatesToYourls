@@ -49,10 +49,9 @@ if ($AMZItem =~ /^[0-9A-Z]{10}$/)
 	$AWSEndPoint = "ecs.amazonaws.$tld" ; 
 	$AMZItem =~ /([0-9A-Z]{10})/ ;
 	$itemId = $1 ;
-	#print "ASIN : $itemId\n"  ;
-	print 'You can drag the bookmarlet to get your links directly from an amazon Page : <a href="javascript:(function(){window.open(\''.$cgi->url().'?url=\'+document.URL);})();">AMZ Affiliated Link</a><hr><br/><br/>' ;
+	print 'You can drag the bookmarlet to get : <ul><li>-your links directly from an amazon Page : <a href="javascript:(function(){window.open(\''.$cgi->url().'?showlinks=1&url=\'+document.URL);})();">AMZ Aff Link</a></li><li>-directly redirected to the Affiliated link:  <a href="javascript:(function(){window.open(\''.$cgi->url().'?showlinks=0&url=\'+document.URL,\'_self\');})();">AMZ Aff Direct</a></li></ul><hr><br/><br/>' ;
 } else {
-	print 'You can drag the bookmarlet to get your links directly from an amazon Page : <a href="javascript:(function(){window.open(\''.$cgi->url().'?url=\'+document.URL);})();">AMZ Affiliated Link</a><hr><br/><br/>' ;
+	print 'You can drag the bookmarlet to get : <ul><li>-your links directly from an amazon Page : <a href="javascript:(function(){window.open(\''.$cgi->url().'?showlinks=1&url=\'+document.URL);})();">AMZ Aff Link</a></li><li>-directly redirected to the Affiliated link:  <a href="javascript:(function(){window.open(\''.$cgi->url().'?showlinks=0&url=\'+document.URL,\'_self\');})();">AMZ Aff Direct</a></li></ul><hr><br/><br/>' ;
 	print "No ASIN Found !!\n" ;
 	exit(2) ;
 }
@@ -150,7 +149,7 @@ if (@ARGV > 0)
 			<li><a target='_blank' href='http://www.facebook.com/sharer.php?u=$shorturl'><img src='img/fbshare.png' border=0/></a></li>
 			</ul>" ;
 	} else {
-		print "\n<h1> Redirecting ...</h1>" ;
+		print "\n<h3>Links Generated ...</h3><br/><h1> Redirecting ...</h1>" ;
 		print '<script type="text/javascript">window.location = "';
 		print $signedurl ;
 		print '"</script>' ;
