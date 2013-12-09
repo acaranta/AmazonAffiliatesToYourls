@@ -21,6 +21,7 @@ my $YourlsId = $Config->{YOURLS}->{YOURLSSignature};
 my $YourlsEndPoint = $Config->{YOURLS}->{YOURLSEndPoint};
 
 my $AMZItem ;
+my $showLinks ;
 my $cgi ;
 
 if (@ARGV > 0)
@@ -31,6 +32,7 @@ if (@ARGV > 0)
 	print $cgi->header('Content-type: text/html; charset=utf-8') ;
 	print $cgi->start_html(-title=>"Amazon Affiliates Link Generator for yourls", -encoding=>"UTF-8") ;
 	$AMZItem = $cgi->param('url') ;
+	$showLinks = $cgi->param('showlinks') ;
 }
 
 my $itemId ;
@@ -126,6 +128,8 @@ if (@ARGV > 0)
 	print "Signed URL : ".uri_unescape($signedurl)."\n" ;
 	print "Short URL : $shorturl\n" ;
 } else {
+	if ($showLinks ne '0')
+	{
 	print "Item is : '$title'<br/>" ;
 	print "<br/>Amazon Link : ".uri_unescape($signedurl)." <a href='".uri_unescape($signedurl)."'>Link</a><br/>" ;
 	print "Shortened URL : $shorturl and <a href='$shorturl'>Link</a><br/>" ;
@@ -137,6 +141,12 @@ if (@ARGV > 0)
 		<li><a target='_blank' href='http://twitter.com/share?_=$curtime&text=$titleshare&url=$shorturl'><img src='img/tweetshare.png'/></a></li>
 		<li><a target='_blank' href='http://www.facebook.com/sharer.php?u=$shorturl'><img src='img/fbshare.png' border=0/></a></li>
 		</ul>" ;
+	} else {
+		print "\n<h1> Redirecting ...</h1>" ;
+		print '<script type="text/javascript">window.location = "';
+		print $signedurl ;
+		print '"</script>' ;
+	}
 }
 
 
