@@ -3,7 +3,6 @@
 use strict;
 use utf8 ;
 use Data::Dumper;
-#use Text::Unidecode;
 use HTML::Entities ;
 use RequestSignatureHelper;
 use LWP::UserAgent;
@@ -118,7 +117,7 @@ if ($YourlsId =~ /[a-aA-Z0-9]+/)
 	my $response = $ua->get($url);
 	my $content = $response->content();
 ##print $content ;
-	$content =~ s/&(acirc|atilde|reg);//gi ;	
+	$content =~ s/&(uml|cent|acirc|atilde|reg);//gi ;	
 	my $xmlParser = new XML::Simple();
 	my $xml = $xmlParser->XMLin($content);
 
