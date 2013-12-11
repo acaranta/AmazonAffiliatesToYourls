@@ -44,9 +44,12 @@ if ($AMZItem =~ /^[0-9A-Z]{10}$/)
 {
 	$AMZItem =~ m/amazon\.([a-zA-Z]+)\// ;
 	my $tld = $1 ;
-	#print "TLD = $tld\n" ;
-	$AWSEndPoint = "ecs.amazonaws.$tld" ; 
-	$AMZItem =~ /([0-9A-Z]{10})/ ;
+	# print "TLD = $tld\n" ;
+	if ($tld =~ /[a-z]+/)
+	{
+		$AWSEndPoint = "ecs.amazonaws.$tld" ; 
+	}
+	$AMZItem =~ /\/([0-9A-Z]{10})\// ;
 	$itemId = $1 ;
 	print 'You can drag the bookmarlet to get : <ul><li>-your links directly from an amazon Page : <a href="javascript:(function(){window.open(\''.$cgi->url().'?showlinks=1&url=\'+document.URL);})();">AMZ Aff Link</a></li><li>-directly redirected to the Affiliated link:  <a href="javascript:(function(){window.open(\''.$cgi->url().'?showlinks=0&url=\'+document.URL,\'_self\');})();">AMZ Aff Direct</a></li></ul><hr><br/><br/>' ;
 } else {
@@ -117,7 +120,8 @@ if ($YourlsId =~ /[a-aA-Z0-9]+/)
 	my $response = $ua->get($url);
 	my $content = $response->content();
 ##print $content ;
-	$content =~ s/&(uml|cent|acirc|atilde|reg);//gi ;	
+	$content =~ s/&[a-z]+;//gi ;
+	$content =~ s/&(uml|cent|copy|ordf|acirc|atilde|reg);//gi ;	
 	my $xmlParser = new XML::Simple();
 	my $xml = $xmlParser->XMLin($content);
 
@@ -148,10 +152,16 @@ if (@ARGV > 0)
 			<li><a target='_blank' href='http://www.facebook.com/sharer.php?u=$shorturl'><img src='img/fbshare.png' border=0/></a></li>
 			</ul>" ;
 	} else {
-		print "\n<h3>Links Generated ...</h3><br/><h1> Redirecting ...</h1>" ;
-		print '<script type="text/javascript">window.location = "';
-		print $signedurl ;
-		print '"</script>' ;
+		if ($signedurl =~ /[a-zA-Z0-9]/)
+		{
+			print "\n<h3>Links Generated ...</h3><br/><h1> Redirecting ...</h1>" ;
+			print '<script type="text/javascript">window.location = "';
+			print $signedurl ;
+			print '"</script>' ;
+		} else {
+			print "<h1>Woops something went wrong ... nevermind ... I take you back to your product ;)</h1>" ;
+			print '<script type="text/javascript">history.back();</script>' ;
+		}
 	}
 }
 
