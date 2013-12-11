@@ -161,6 +161,15 @@ if (@ARGV > 0)
 		} else {
 			print "<h1>Woops something went wrong ... nevermind ... I take you back to your product ;)</h1>" ;
 			print '<script type="text/javascript">history.back();</script>' ;
+			open(ERRORFILE, ">>errors.log") ;
+			my $date = `date` ;
+			print ERRORFILE "----------------------------------" ;
+			print ERRORFILE $date ;
+			print ERRORFILE "AMZ URL : ".$cgi->param('url')."\n" ;
+			print ERRORFILE "AMZ ID : $AMZItem\n" ;
+			print ERRORFILE "EndPoint : $AWSEndPoint\n" ;
+			print ERRORFILE "Signed URL : $signedurl\n" ;
+			close(ERRORFILE) ;
 		}
 	}
 }
