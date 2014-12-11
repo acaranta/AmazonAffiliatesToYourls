@@ -29,7 +29,7 @@ if (@ARGV > 0)
 	$AMZItem = shift @ARGV ;
 } else {
 	$cgi = new CGI ;
-	print $cgi->header('Content-type: text/html; charset=utf-8') ;
+	print $cgi->header(-type => 'text/html', -charset => 'utf-8') ;
 	print $cgi->start_html(-title=>"Amazon Affiliates Link Generator for yourls", -encoding=>"UTF-8") ;
 	$AMZItem = $cgi->param('url') ;
 	$showLinks = $cgi->param('showlinks') ;
@@ -52,11 +52,11 @@ if ($AMZItem =~ /^[0-9A-Z]{10}$/)
 	$AMZItem =~ /\/([0-9A-Z]{10})\// ;
 	$itemId = $1 ;
 	print 'You can drag the bookmarlet to get : <ul><li>-your links directly from an amazon Page : <a href="javascript:(function(){window.open(\''.$cgi->url().'?showlinks=1&url=\'+document.URL);})();">AMZ Aff Link</a></li><li>-directly redirected to the Affiliated link:  <a href="javascript:(function(){window.open(\''.$cgi->url().'?showlinks=0&url=\'+document.URL,\'_self\');})();">AMZ Aff Direct</a></li></ul><hr><br/><br/>' ;
-	print "<br/><br/><br/>You can also install the <a href='http://api.minixer.com/AMZ2YOURLS/arthuramazon.xpi'>Firefox Addon</a> so you won't have to click on anything anymore !<br/>" ;
+##	print "<br/><br/><br/>You can also install the <a href='http://api.minixer.com/AMZ2YOURLS/arthuramazon.xpi'>Firefox Addon</a> so you won't have to click on anything anymore !<br/>" ;
 } else {
 	print 'You can drag the bookmarlet to get : <ul><li>-your links directly from an amazon Page : <a href="javascript:(function(){window.open(\''.$cgi->url().'?showlinks=1&url=\'+document.URL);})();">AMZ Aff Link</a></li><li>-directly redirected to the Affiliated link:  <a href="javascript:(function(){window.open(\''.$cgi->url().'?showlinks=0&url=\'+document.URL,\'_self\');})();">AMZ Aff Direct</a></li></ul><hr><br/><br/>' ;
 	print "No ASIN Found !!\n" ;
-	print "<br/><br/><br/>You can also install the <a href='http://api.minixer.com/AMZ2YOURLS/arthuramazon.xpi'>Firefox Addon</a> so you won't have to click on anything anymore !<br/>" ;
+##	print "<br/><br/><br/>You can also install the <a href='http://api.minixer.com/AMZ2YOURLS/arthuramazon.xpi'>Firefox Addon</a> so you won't have to click on anything anymore !<br/>" ;
 	exit(2) ;
 }
 # Set up the helper
