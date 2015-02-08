@@ -69,7 +69,7 @@ function getData(){
 	print '<form id="formsearch" >
 		<div>
 		<label class="description" for="element_1">Mot Clef </label>
-		<input id="q" name="q" class="element text medium" type="text" maxlength="255" value="'.$keyword.'"/> 
+		<input id="q" name="q" class="textbox" type="text" maxlength="255" value="'.$keyword.'"/> 
 		<label class="description" for="element_1">Category </label>
 		<select class="element select medium" id="categ" name="categ">' ;
 	my $categories ;
@@ -116,7 +116,7 @@ function getData(){
 		#<input id="saveForm" class="button_text" type="submit" name="submit" value="Submit" />
 	print '		</select>
 		<label class="description" for="element_1">Reduction % </label>
-		<input id="reduc" name="reduc" class="element text medium" type="text" maxlength="10" value="'.$reduc.'"/>';
+		<input id="reduc" name="reduc" class="textbox" type="text" maxlength="10" value="'.$reduc.'"/>';
 	print '	<a href="#" onclick="javascript:getData()">Go</a>' ;
 	print '	</div> 
 		</form>' ;
@@ -124,7 +124,17 @@ function getData(){
 
 	print "<div id='loading' style='display:none' width='100%' align=center> <img align=center src='loading.gif'/> <h3 align=center>En cours ...</h3> </div>" ;
 	print "<div id='content' width='100%'></div>" ;
-
+	print '<script>
+$(".textbox").bind("enterKey",function(e) {
+getData() ;
+});
+$(".textbox").keyup(function(e){
+    if(e.keyCode == 13)
+    {
+        $(this).trigger("enterKey");
+    }
+});
+</script>' ;
 } else {
 	if ($keyword !~ /.+/)
 	{
