@@ -125,13 +125,10 @@ function getData(){
 	print "<div id='loading' style='display:none' width='100%' align=center> <img align=center src='loading.gif'/> <h3 align=center>En cours ...</h3> </div>" ;
 	print "<div id='content' width='100%'></div>" ;
 	print '<script>
-$(".textbox").bind("enterKey",function(e) {
-getData() ;
-});
-$(".textbox").keyup(function(e){
+$(document).keyup(function(e){
     if(e.keyCode == 13)
     {
-        $(this).trigger("enterKey");
+	getData();
     }
 });
 </script>' ;
